@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import app from "../../Firebase/Firebase.config";
 
 const Login = () => {
     
+    const auth = getAuth(app)
+    const goggleProvider = new GoogleAuthProvider();
+
+    const handleGoogleLogin = ()=>{
+        console.log("click lagce re ")
+    }
+
+
+
   return (
     <div>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -52,7 +63,9 @@ const Login = () => {
           </form>
 
           <div className="mt-4">
-            <button className="w-full px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg shadow focus:outline-none focus:ring focus:ring-red-300">
+            <button 
+            onClick={handleGoogleLogin}
+            className="w-full px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg shadow focus:outline-none focus:ring focus:ring-red-300">
               Sign in with Google
             </button>
           </div>
