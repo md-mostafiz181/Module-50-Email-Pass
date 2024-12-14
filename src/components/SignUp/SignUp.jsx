@@ -1,21 +1,46 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../Firebase/Firebase.config";
+import { useState } from "react";
 
 const SignUp = () => {
+
+    const [registerError, setRegisterError]=useState("");
+    const [success, setSuccess]=useState("")
+    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+
+
     const handleSingUp = e =>{
         e.preventDefault();
         const name = e.target.name.value;
         const email= e.target.email.value;
         const password= e.target.password.value;
         console.log(name,email,password)
+
+                // reset form
+                setRegisterError('')
+                setSuccess("")
+
+        if(password.length < 6){
+            setRegisterError("password must be in 6 characters or longer");
+            return
+        }
+
+
+
+
+
         createUserWithEmailAndPassword(auth,email,password)
         .then(result=>{
             const loggedUser=result.user;
-            console.log(loggedUser)
+            setSuccess("user create successfully.")
+            
         })
         .catch(error=>{
-            console.error(error.message)
+            
+            setRegisterError(error.message)
         })
+
+        setFormData({ name: '', email: '', password: '' });
     }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -29,6 +54,7 @@ const SignUp = () => {
             name="name"
             id="name"
             placeholder="Enter your name"
+            
             className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
@@ -38,6 +64,7 @@ const SignUp = () => {
             type="email"
             name="email"
             id="email"
+            required
             placeholder="Enter your email"
             className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           />
@@ -48,6 +75,7 @@ const SignUp = () => {
             type="password"
             name="password"
             id="password"
+            required
             placeholder="Enter your password"
             className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           />
@@ -59,6 +87,16 @@ const SignUp = () => {
           Sign Up
         </button>
       </form>
+
+      <div className="mt-4">
+        {
+            registerError && <p className="text-red-600">{registerError}</p>
+        }
+
+        {
+            success && <p className="text-green-600 font-bold"> {success}</p>
+        }
+      </div>
     </div>
   </div>
   );
