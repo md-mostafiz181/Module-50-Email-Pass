@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
-import { useState } from "react";
+import { GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { useRef, useState } from "react";
 import auth from "../../Firebase/Firebase.config";
 
 const Login = () => {
@@ -8,6 +8,7 @@ const Login = () => {
     const [user,setUser]=useState(null)
     const [errorLogin,setErrorLogin]=useState("")
     const [success, setSuccess]=useState("")
+    const emailRef=useRef(null)
     
 
     const goggleProvider = new GoogleAuthProvider();
@@ -44,6 +45,24 @@ const Login = () => {
         console.log(error.message)
         setErrorLogin(error.message)
       })
+    }
+
+    const handleResetPassword = () =>{
+        const email =emailRef.current.value;
+        if(!email){
+          setErrorLogin("Please provide your email")
+          return;
+        }
+      
+
+        sendPasswordResetEmail(auth,email)
+        .then(()=>{
+              alert("check you email first")
+        })
+        .catch(error=>{
+          setErrorLogin(error)
+        })
+        
     }
 
 
@@ -85,6 +104,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                ref={emailRef}
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-50 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 placeholder="Enter your email"
                 required
@@ -102,7 +122,10 @@ const Login = () => {
                 required
               />
             </div>
-
+            
+            <div>
+              <p onClick={handleResetPassword} className="font-bold btn">Forget Password?</p>
+            </div>
             <div>
               {
                 errorLogin && <p className="text-red-500">{errorLogin}</p>
