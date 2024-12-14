@@ -2,10 +2,12 @@ import { createUserWithEmailAndPassword } from "firebase/auth/cordova";
 import auth from "../../Firebase/Firebase.config";
 import { useState } from "react";
 
+
 const Register = () => {
 
   const [registerError, setRegisterError]=useState("");
   const [success, setSuccess]= useState("")
+  const [show,setShow]=useState(false)
 
   const handleRegister = e =>{
     e.preventDefault();
@@ -38,6 +40,8 @@ const Register = () => {
       console.log(error.message)
       setRegisterError(error.message)
     })
+
+
 
 
   }
@@ -87,12 +91,18 @@ const Register = () => {
                 Password
               </label>
               <input
-                type="password"
+                type={show ? "text" : "password"}
                 name="password"
                 id="password"
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
+              <div className="showbtn">
+              <span className="btn" onClick={()=>setShow(!show)}>
+                show password
+              </span>
+              </div>
+
 
               <div className="mt-3">
               <input type="checkbox" name="terms" id="terms" />
@@ -116,6 +126,8 @@ const Register = () => {
               Register
             </button>
           </form>
+
+          <p>Already have an account? please <a href="/login" className="font-bold uppercase text-blue-600">Login</a> </p>
         </div>
       </div>
     </div>
