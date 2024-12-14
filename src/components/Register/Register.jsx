@@ -94,8 +94,10 @@ const Register = () => {
                 className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
 
+              <div className="mt-3">
               <input type="checkbox" name="terms" id="terms" />
-              <label  className="ms-2 mb-4" htmlFor="terms">Check our terms and conditions</label>
+              <label  className="ms-2 mb-4 font-bold"  htmlFor="terms">Check our terms and conditions</label>
+              </div>
             </div>
 
             <div>
