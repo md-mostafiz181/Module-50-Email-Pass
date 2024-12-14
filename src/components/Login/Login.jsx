@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import app from "../../Firebase/Firebase.config";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from "react";
+import auth from "../../Firebase/Firebase.config";
 
 const Login = () => {
 
     const [user,setUser]=useState(null)
+    const [errorLogin,setErrorLogin]=useState("")
+    const [success, setSuccess]=useState("")
     
-    const auth = getAuth(app)
+
     const goggleProvider = new GoogleAuthProvider();
 
     const handleGoogleLogin = ()=>{
@@ -20,6 +22,28 @@ const Login = () => {
         .catch(error=>{
             console.log("error", error.message)
         })
+    }
+
+    const handleLogin = e =>{
+      e.preventDefault();
+      const name=e.target.name.value;
+      const email=e.target.email.value;
+      const password =e.target.password.value;
+      console.log(name,email,password)
+
+
+      setErrorLogin("")
+      setSuccess("")
+
+      signInWithEmailAndPassword(auth,email,password)
+      .then(result=>{
+        const loggedUser = result.user; 
+        setSuccess("User login successfully.")
+      })
+      .catch(error=>{
+        console.log(error.message)
+        setErrorLogin(error.message)
+      })
     }
 
 
@@ -41,13 +65,14 @@ const Login = () => {
         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
           <h1 className="text-3xl font-bold text-center mb-4">Please Login</h1>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleLogin}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Name
               </label>
               <input
                 type="text"
+                name="name"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-50 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 placeholder="Enter your name"
               />
@@ -59,6 +84,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-50 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 placeholder="Enter your email"
                 required
@@ -70,10 +96,20 @@ const Login = () => {
               </label>
               <input
                 type="password"
+                name="password"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-50 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
                 placeholder="Enter your password"
                 required
               />
+            </div>
+
+            <div>
+              {
+                errorLogin && <p className="text-red-500">{errorLogin}</p>
+              }
+              {
+                success && <p className="text-green-600">{success}</p>
+              }
             </div>
            
 
