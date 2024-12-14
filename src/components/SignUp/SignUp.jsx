@@ -16,7 +16,8 @@ const SignUp = () => {
         const name = e.target.name.value;
         const email= e.target.email.value;
         const password= e.target.password.value;
-        console.log(name,email,password)
+        const accepted = e.target.terms.checked;
+        console.log(name,email,password,accepted)
 
                 // reset form
                 setRegisterError('')
@@ -28,6 +29,10 @@ const SignUp = () => {
         }
         else if (!/[A-Z]/.test(password)){
             setRegisterError("use at least one uppercase");
+            return;
+        }
+        else if (!accepted){
+            setRegisterError("please accept our terms and conditions!");
             return;
         }
 
@@ -93,6 +98,10 @@ const SignUp = () => {
            </span>
          
         </div>
+
+        <input type="checkbox" name="terms" id="" />
+        <label className="ms-1 mb-3" htmlFor="terms">Accept our terms and condition</label>
+        <br />
         <button
           type="submit"
           className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
