@@ -1,3 +1,6 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import auth from "../../Firebase/Firebase.config";
+
 const SignUp = () => {
     const handleSingUp = e =>{
         e.preventDefault();
@@ -5,6 +8,14 @@ const SignUp = () => {
         const email= e.target.email.value;
         const password= e.target.password.value;
         console.log(name,email,password)
+        createUserWithEmailAndPassword(auth,email,password)
+        .then(result=>{
+            const loggedUser=result.user;
+            console.log(loggedUser)
+        })
+        .catch(error=>{
+            console.error(error.message)
+        })
     }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
